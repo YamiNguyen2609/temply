@@ -23,3 +23,51 @@ body {
   background-color: var(--background);
   color: var(--foreground);
 }
+
+@layer utilities {
+  .bio-shine {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .bio-shine::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(
+      to right,
+      transparent,
+      rgba(255, 255, 255, 0.3),
+      transparent
+    );
+    transform: skewX(-20deg);
+    animation: shine 3s infinite;
+  }
+
+  @keyframes shine {
+    0% {
+      left: -100%;
+    }
+    20% {
+      left: 200%;
+    }
+    100% {
+      left: 200%;
+    }
+  }
+
+  .hide-scroll {
+    /* IE and Edge */
+    -ms-overflow-style: none;
+    /* Firefox */
+    scrollbar-width: none;
+  }
+  
+  .hide-scroll::-webkit-scrollbar {
+    /* Chrome, Safari and Opera */
+    display: none;
+  }
+}
