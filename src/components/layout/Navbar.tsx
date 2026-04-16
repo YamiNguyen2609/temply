@@ -16,7 +16,7 @@ export default function Navbar() {
               Temply.
             </Link>
           </div>
-          
+
           <div className="hidden md:flex space-x-8 items-center bg-gray-50/50 px-6 py-2 rounded-full border border-gray-100/50">
             <Link href="/" className="text-sm text-gray-700 hover:text-primary transition-colors font-medium">Trang Chủ</Link>
             <Link href="/shop" className="text-sm text-gray-700 hover:text-primary transition-colors font-medium">Cửa Hàng</Link>
@@ -27,13 +27,10 @@ export default function Navbar() {
             <button className="p-2 text-gray-600 hover:text-primary transition-all duration-300 bg-gray-50 hover:bg-primary/10 rounded-full focus:outline-none">
               <ShoppingCart className="w-5 h-5" />
             </button>
-            <Link href="/account" className="p-2 text-gray-600 hover:text-primary transition-all duration-300 bg-gray-50 hover:bg-primary/10 rounded-full">
-              <User className="w-5 h-5" />
-            </Link>
           </div>
 
           <div className="md:hidden flex items-center">
-            <button 
+            <button
               onClick={() => setIsOpen(!isOpen)}
               className="p-2 text-gray-600 hover:text-primary focus:outline-none"
             >
