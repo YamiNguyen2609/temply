@@ -8,16 +8,18 @@ export interface SheetConfigItem {
 }
 
 export interface SheetPaymentItem {
-    payment_barcode: string;
-    payment_bank_name: string;
+    payment_account_name: string;
     payment_account_number: string;
+    payment_bank_name: string;
+    payment_qr: string;
 }
 
 export interface SheetProjectItem {
     project_id: string;
     project_name: string;
+    project_description: string;
     project_url: string;
-    project_pricing: string;
+    project_pricing: number;
     project_thumb: string;
     project_best_seller: boolean;
     project_level: string;
@@ -41,16 +43,16 @@ export interface SheetCategoryItem {
 }
 
 export interface SheetItem {
-    config: SheetConfigItem;
-    payment: SheetPaymentItem;
-    project: SheetProjectItem[];
-    level: SheetLevelItem[];
-    category: SheetCategoryItem[];
-    social: SheetSocialItem[];
+    config: SheetConfigItem | null;
+    payment: SheetPaymentItem | null;
+    project: SheetProjectItem[] | null;
+    level: SheetLevelItem[] | null;
+    category: SheetCategoryItem[] | null;
+    social: SheetSocialItem[] | null;
 }
 
 interface DataContextType {
-    data: SheetItem;
+    data: SheetItem | null;
     loading: boolean;
     error: string | null;
 }

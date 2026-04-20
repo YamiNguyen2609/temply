@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { ArrowRight, CheckCircle2, TrendingUp, ShieldCheck, Zap } from "lucide-react";
-import { PRODUCTS } from "@/data/products";
+import { useData } from '@/context/DataContext';
 import Image from "next/image";
 
 const fadeIn = {
@@ -22,8 +22,8 @@ const staggerContainer = {
 };
 
 export default function Home() {
-  const bestSellers = PRODUCTS.filter(p => p.isBestSeller);
-
+  const { data, loading } = useData();
+  const bestSellers = data?.project?.filter(p => p.project_best_seller);
   return (
     <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
@@ -68,7 +68,7 @@ export default function Home() {
               { icon: TrendingUp, title: "Tăng Năng Suất", desc: "Theo dõi số liệu tự động và trực quan, giúp bạn ra quyết định nhanh hơn." },
               { icon: ShieldCheck, title: "An Toàn Dữ Liệu", desc: "Toàn quyền sở hữu file Excel/Sheets của bạn. Hướng dẫn chi tiết cách khóa các ô quan trọng." }
             ].map((benefit, idx) => (
-              <motion.div 
+              <motion.div
                 key={idx}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -101,21 +101,26 @@ export default function Home() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {bestSellers.map((product, idx) => (
-              <motion.div 
-                key={product.id}
+            {bestSellers?.map((product, idx) => (
+              <motion.div
+                key={product.project_id}
                 initial={{ opacity: 0, scale: 0.95 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: idx * 0.1, duration: 0.4 }}
                 className="bg-white rounded-2xl shadow-sm hover:shadow-xl hover:shadow-primary/10 transition-all duration-300 overflow-hidden border border-gray-100 group flex flex-col"
               >
-                <div className="aspect-w-16 aspect-h-10 bg-gray-200 relative overflow-hidden h-48">
+                <div className="aspect-w-16 aspect-h-10 bg-gray-200 relative overflow-hidden h-72">
                   {/* Placeholder for image */}
                   <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 to-gray-200 flex items-center justify-center text-gray-400 group-hover:scale-105 transition-transform duration-500">
-                    <span className="font-semibold text-xl text-gray-500/50">Temply Mocks</span>
+                    <Image
+                      src={product.project_thumb || '/images/No_Image_Available.svg'}
+                      alt={product.project_name}
+                      fill
+                      className="object-cover"
+                    />
                   </div>
-                  {product.complexity === 'premium' && (
+                  {product.project_level === 'Premium' && (
                     <div className="absolute top-4 right-4 bg-gray-900 text-white text-xs font-bold px-3 py-1 rounded-full">
                       PREMIUM
                     </div>
@@ -123,29 +128,26 @@ export default function Home() {
                 </div>
                 <div className="p-6 flex flex-col flex-1">
                   <div className="text-xs font-bold text-primary mb-2 uppercase tracking-wider">
-                    {product.categoryId}
+                    {product.project_category}
                   </div>
                   <h3 className="text-lg font-bold text-gray-900 mb-2 line-clamp-1 group-hover:text-primary transition-colors">
-                    {product.title}
+                    {product.project_name}
                   </h3>
                   <p className="text-gray-500 text-sm mb-6 line-clamp-2">
-                    {product.description}
+                    {product.project_description}
                   </p>
-                  
+
                   <div className="mt-auto flex items-center justify-between">
                     <div>
-                      {product.price > 0 ? (
+                      {product.project_pricing > 0 ? (
                         <div className="flex items-center space-x-2">
-                          <span className="text-xl font-bold text-gray-900">{product.price.toLocaleString('vi-VN')}đ</span>
-                          {product.originalPrice && (
-                            <span className="text-sm text-gray-400 line-through">{product.originalPrice.toLocaleString('vi-VN')}đ</span>
-                          )}
+                          <span className="text-xl font-bold text-gray-900">{product.project_pricing.toLocaleString('vi-VN')}đ</span>
                         </div>
                       ) : (
                         <span className="text-xl font-bold text-green-500">Miễn phí</span>
                       )}
                     </div>
-                    <Link href={`/product/${product.id}`} className="bg-gray-100 hover:bg-primary hover:text-white text-gray-900 p-2 rounded-full transition-colors">
+                    <Link href={`/product/${product.project_id}`} className="bg-gray-100 hover:bg-primary hover:text-white text-gray-900 p-2 rounded-full transition-colors">
                       <ArrowRight className="w-5 h-5" />
                     </Link>
                   </div>
@@ -153,7 +155,7 @@ export default function Home() {
               </motion.div>
             ))}
           </div>
-          
+
           <div className="mt-8 text-center sm:hidden">
             <Link href="/shop" className="inline-flex items-center text-primary font-semibold hover:text-primary-hover">
               Xem tất cả <ArrowRight className="ml-1 w-4 h-4" />
