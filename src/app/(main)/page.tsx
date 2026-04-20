@@ -117,10 +117,11 @@ export default function Home() {
                       src={product.project_thumb || '/images/No_Image_Available.svg'}
                       alt={product.project_name}
                       fill
+                      loading="eager"
                       className="object-cover"
                     />
                   </div>
-                  {product.project_level === 'Premium' && (
+                  {product.project_Complexity === 'Complexity_Premium' && (
                     <div className="absolute top-4 right-4 bg-gray-900 text-white text-xs font-bold px-3 py-1 rounded-full">
                       PREMIUM
                     </div>

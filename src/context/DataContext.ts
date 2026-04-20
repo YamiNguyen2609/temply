@@ -22,7 +22,7 @@ export interface SheetProjectItem {
     project_pricing: number;
     project_thumb: string;
     project_best_seller: boolean;
-    project_level: string;
+    project_Complexity: string;
     project_category: string[];
 }
 
@@ -32,9 +32,9 @@ export interface SheetSocialItem {
     social_url: string;
 }
 
-export interface SheetLevelItem {
-    level_id: string;
-    level_name: string;
+export interface SheetComplexityItem {
+    complexity_id: string;
+    complexity_name: string;
 }
 
 export interface SheetCategoryItem {
@@ -46,7 +46,7 @@ export interface SheetItem {
     config: SheetConfigItem | null;
     payment: SheetPaymentItem | null;
     project: SheetProjectItem[] | null;
-    level: SheetLevelItem[] | null;
+    Complexity: SheetComplexityItem[] | null;
     category: SheetCategoryItem[] | null;
     social: SheetSocialItem[] | null;
 }

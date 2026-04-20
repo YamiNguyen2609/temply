@@ -21,9 +21,7 @@ export default function RootLayout({
   return (
     <html lang="vi" className={`${inter.variable} antialiased h-full`}>
       <body className="min-h-full flex flex-col font-sans selection:bg-primary/20">
-        <DataProvider>
           {children}
-        </DataProvider>
       </body>
     </html>
   );

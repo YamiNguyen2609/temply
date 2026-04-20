@@ -1,7 +1,7 @@
 'use client';
 
 import { ReactNode, useEffect, useState } from 'react';
-import { DataContext, SheetItem, SheetConfigItem, SheetPaymentItem, SheetProjectItem } from '../context/DataContext';
+import { DataContext, SheetItem, SheetConfigItem, SheetPaymentItem, SheetProjectItem, SheetCategoryItem, SheetComplexityItem } from '../context/DataContext';
 import { fetchGoogleSheet } from '../lib/googleSheet';
 
 interface Props {
@@ -31,8 +31,9 @@ export const DataProvider = ({ children }: Props) => {
       let result = {} as SheetItem;
       for (let i = 0; i < data.length; i++) {
         const row = data[i];
+        if(row)
         if (row.length == 0) continue;
-        else if (row[0]?.toLocaleUpperCase().includes('END')) break;
+        else if (row[0]?.toLocaleUpperCase() == 'END') break;
         else if (row[0]?.toLocaleUpperCase().startsWith('USER INFORMATION')) {
           let mapping = MappingDataUser(data, i);
           result.config = mapping?.data || null;
@@ -43,17 +44,29 @@ export const DataProvider = ({ children }: Props) => {
           result.payment = mapping?.data || null;
           i = mapping?.nextIndex || i;
         }
+        else if (row[0]?.toLocaleUpperCase().startsWith('COMPLEXITY')) {
+          let mapping = MappingDataComplexity(data, i);
+          result.Complexity = mapping?.data || null;
+          i = mapping?.nextIndex || i;
+        }
+        else if (row[0]?.toLocaleUpperCase().startsWith('CATEGORY')) {
+          let mapping = MappingDataCategory(data, i);
+          result.category = mapping?.data || null;
+          i = mapping?.nextIndex || i;
+        }
         else if (row[0]?.toLocaleUpperCase().startsWith('PROJECT')) {
           let mapping = MappingDataProject(data, i);
           result.project = mapping?.data || null;
           i = mapping?.nextIndex || i;
+          result.project?.forEach(element => {
+            let complexity = result.Complexity?.find(c => c.complexity_name == element.project_Complexity);
+            element.project_Complexity = complexity?.complexity_id || '';
+            element.project_category.forEach((category, index) => {
+              let categoryFind = result.category?.find(c => c.category_name == category);
+              element.project_category[index] = categoryFind?.category_id || '';
+            });
+          });
         }
-        // if (row[0]?.includes('LEVEL')) {
-        //   result.level = MappingDataLevel(data, i);
-        // }
-        // if (row[0]?.includes('CATEGORY')) {
-        //   result.category = MappingDataCategory(data, i);
-        // }
         // if (row[0]?.includes('SOCIAL')) {
         //   result.social = MappingDataSocial(data, i);
         // }
@@ -119,9 +132,37 @@ const MappingDataProject = (data: string[][], index: number) => {
       project_pricing: Number(row[4]),
       project_thumb: row[5],
       project_best_seller: row[6] == "TRUE",
-      project_level: row[7],
-      project_category: row[8].split(","),
+      project_Complexity: row[7],
+      project_category: row[8].split(",").map(c => c.trim()),
     });
+    length++;
+  }
+  index += length + 2;
+  return { data: result, nextIndex: index };
+}
+
+const MappingDataComplexity = (data: string[][], index: number) => {
+  if (data.length == 0) return null;
+  let result = [] as SheetComplexityItem[];
+  let length = 0;
+  for (let i = index + 2; i <= data.length; i++) {
+    const row = data[i];
+    if (row[0]?.toLocaleUpperCase().endsWith('END')) break;
+    result.push({ complexity_id: row[0], complexity_name: row[1] });
+    length++;
+  }
+  index += length + 2;
+  return { data: result, nextIndex: index };
+}
+
+const MappingDataCategory = (data: string[][], index: number) => {
+  if (data.length == 0) return null;
+  let result = [] as SheetCategoryItem[];
+  let length = 0;
+  for (let i = index + 2; i <= data.length; i++) {
+    const row = data[i];
+    if (row[0]?.toLocaleUpperCase().endsWith('END')) break;
+    result.push({ category_id: row[0], category_name: row[1] });
     length++;
   }
   index += length + 2;
