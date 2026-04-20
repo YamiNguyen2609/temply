@@ -4,9 +4,8 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { ArrowRight, Filter, Search } from "lucide-react";
-import { PRODUCTS } from "@/data/products";
-import { CATEGORIES, COMPLEXITIES } from "@/data/categories";
 import { useData } from "@/context/DataContext";
+import Image from "next/image";
 
 export default function Shop() {
   const {data, loading} = useData();
@@ -158,7 +157,13 @@ export default function Shop() {
                     <div className="aspect-w-4 aspect-h-3 bg-gray-100 relative overflow-hidden h-72">
                       {/* Image placeholder */}
                       <div className="absolute inset-0 bg-gradient-to-tr from-primary/10 to-gray-200 flex items-center justify-center text-gray-400 group-hover:scale-105 transition-transform duration-500">
-                        <span className="font-semibold text-lg text-gray-500/40">Product Image</span>
+                        <Image
+                          src={product.project_thumb || '/images/No_Image_Available.svg'}
+                          alt={product.project_name}
+                          fill
+                          loading="eager"
+                          className="object-cover"
+                        />
                       </div>
                       
                       {product.project_Complexity === 'Complexity_Premium' && (
