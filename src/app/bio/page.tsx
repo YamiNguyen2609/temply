@@ -3,7 +3,6 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
-import { PRODUCTS } from "@/data/products";
 import { 
   Camera, 
   MessageSquare, 
@@ -29,7 +28,7 @@ const socialLinks = [
 ];
 
 export default function BioPage() {
-  const featuredProducts = PRODUCTS.slice(0, 4); // Only show top 4 on bio
+  const featuredProducts = [].slice(0, 4); // Only show top 4 on bio
 
   return (
     <div className="min-h-screen md:h-screen bg-gray-50 flex flex-col md:flex-row overflow-x-hidden md:overflow-hidden">
@@ -160,7 +159,7 @@ export default function BioPage() {
           
           {/* Horizontal Scroll on Mobile, Grid on Desktop */}
           <div className="flex overflow-x-auto md:grid md:grid-cols-2 gap-3 lg:gap-4 pb-6 md:pb-0 -mx-4 px-4 md:mx-0 md:px-0 snap-x snap-mandatory hide-scroll">
-            {featuredProducts.map((product, idx) => (
+            {/* {featuredProducts.map((product, idx) => (
               <motion.div 
                 key={product.id}
                 initial={{ opacity: 0, y: 20 }}
@@ -195,7 +194,7 @@ export default function BioPage() {
                   </div>
                 </div>
               </motion.div>
-            ))}
+            ))} */}
           </div>
         </div>
         
