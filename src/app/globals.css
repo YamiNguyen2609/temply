@@ -75,4 +75,14 @@ body {
   .h-72 {
     height: calc(var(--spacing) * 72);
   }
+
+  .h-image {
+    height: calc(var(--spacing) * 72);
+  }
+
+  @media(max-width: 768px) {
+    .h-image {
+      height: calc(var(--spacing) * 87);
+    }
+  }
 }

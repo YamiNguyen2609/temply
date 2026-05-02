@@ -1,5 +1,6 @@
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import { DataProvider } from "@/provider/DataProvider";
 
 export default function MainLayout({
   children,
@@ -7,10 +8,10 @@ export default function MainLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <>
+    <DataProvider>
       <Navbar />
       <main className="flex-1 flex flex-col">{children}</main>
       <Footer />
-    </>
+    </DataProvider>
   );
 }

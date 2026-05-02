@@ -36,7 +36,7 @@
     ".next/dev/types/**/*.ts",
     "**/*.mts",
     "src/lib/googleSheet.ts",
-    "src/providers/DataProvider.js"
+    "src/provider/DataProvider.js"
   ],
   "exclude": [
     "node_modules"

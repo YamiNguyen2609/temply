@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { ArrowRight, CheckCircle2, TrendingUp, ShieldCheck, Zap } from "lucide-react";
+import { ArrowRight, TrendingUp, ShieldCheck, Zap } from "lucide-react";
 import { useData } from '@/context/DataContext';
 import Image from "next/image";
 
@@ -23,7 +23,7 @@ const staggerContainer = {
 
 export default function Home() {
   const { data, loading } = useData();
-  const bestSellers = data?.project?.filter(p => p.project_best_seller);
+  const bestSellers = data?.project?.filter(p => p.bestSeller);
   return (
     <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
@@ -103,7 +103,7 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {bestSellers?.map((product, idx) => (
               <motion.div
-                key={product.project_id}
+                key={product.id}
                 initial={{ opacity: 0, scale: 0.95 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
@@ -114,40 +114,41 @@ export default function Home() {
                   {/* Placeholder for image */}
                   <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 to-gray-200 flex items-center justify-center text-gray-400 group-hover:scale-105 transition-transform duration-500">
                     <Image
-                      src={product.project_thumb || '/images/No_Image_Available.svg'}
-                      alt={product.project_name}
+                      src={product.thumbnail || '/images/No_Image_Available.svg'}
+                      alt={product.name}
                       fill
+                      loading="eager"
                       className="object-cover"
                     />
                   </div>
-                  {product.project_level === 'Premium' && (
+                  {product.complexity === 'Complexity_Premium' && (
                     <div className="absolute top-4 right-4 bg-gray-900 text-white text-xs font-bold px-3 py-1 rounded-full">
                       PREMIUM
                     </div>
                   )}
                 </div>
                 <div className="p-6 flex flex-col flex-1">
-                  <div className="text-xs font-bold text-primary mb-2 uppercase tracking-wider">
-                    {product.project_category}
+                  <div className="flex flex-wrap gap-2 mb-2">
+                    {product.categories.map(cat => <div className="bg-primary font-bold px-2 py-1 rounded-full text-[10px] text-white tracking-wide uppercase" key={cat}>{cat}</div>)}
                   </div>
                   <h3 className="text-lg font-bold text-gray-900 mb-2 line-clamp-1 group-hover:text-primary transition-colors">
-                    {product.project_name}
+                    {product.name}
                   </h3>
                   <p className="text-gray-500 text-sm mb-6 line-clamp-2">
-                    {product.project_description}
+                    {product.description}
                   </p>
 
                   <div className="mt-auto flex items-center justify-between">
                     <div>
-                      {product.project_pricing > 0 ? (
+                      {product.pricing > 0 ? (
                         <div className="flex items-center space-x-2">
-                          <span className="text-xl font-bold text-gray-900">{product.project_pricing.toLocaleString('vi-VN')}đ</span>
+                          <span className="text-xl font-bold text-gray-900">{product.pricing.toLocaleString('vi-VN')}đ</span>
                         </div>
                       ) : (
                         <span className="text-xl font-bold text-green-500">Miễn phí</span>
                       )}
                     </div>
-                    <Link href={`/product/${product.project_id}`} className="bg-gray-100 hover:bg-primary hover:text-white text-gray-900 p-2 rounded-full transition-colors">
+                    <Link href={`/product/${product.slug}`} className="bg-gray-100 hover:bg-primary hover:text-white text-gray-900 p-2 rounded-full transition-colors">
                       <ArrowRight className="w-5 h-5" />
                     </Link>
                   </div>
