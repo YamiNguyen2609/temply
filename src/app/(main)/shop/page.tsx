@@ -6,8 +6,6 @@ import Link from "next/link";
 import { ArrowRight, Filter, Search } from "lucide-react";
 import { useData } from "@/context/DataContext";
 import Image from "next/image";
-import { useData } from "@/context/DataContext";
-import Image from "next/image";
 
 export default function Shop() {
   const { data, loading } = useData();
@@ -22,7 +20,6 @@ export default function Shop() {
       product.description.toLowerCase().includes(searchQuery.toLowerCase());
 
     return matchCategory && matchComplexity && matchSearch;
-  }) || [];
   }) || [];
 
   return (
