@@ -118,6 +118,7 @@ export default function Home() {
                       alt={product.name}
                       fill
                       loading="eager"
+                      loading="eager"
                       className="object-cover"
                     />
                   </div>
